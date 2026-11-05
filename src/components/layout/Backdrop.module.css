@@ -1,0 +1,42 @@
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--hero-base);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+}
+
+.bw,
+.color {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Photo noir & blanc, nette, en transparence sur le gris clair. */
+.bw {
+  filter: grayscale(1) contrast(1.05);
+  opacity: var(--hero-opacity);
+}
+
+/* Copie couleur visible seulement dans le halo de la lampe (--lamp-r = 0 → invisible). */
+.color {
+  -webkit-mask-image: radial-gradient(circle var(--lamp-r) at var(--lx) var(--ly), #000 30%, transparent 100%);
+  mask-image: radial-gradient(circle var(--lamp-r) at var(--lx) var(--ly), #000 30%, transparent 100%);
+}
+
+/* Léger vignetage pour poser le cadre. */
+.wash {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(40, 38, 35, 0.35) 100%);
+}

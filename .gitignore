@@ -1,0 +1,48 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Secrets / environnement (jamais publiés)
+.env
+.env.*
+!.env.example
+
+# Documents et images personnels : ne doivent JAMAIS arriver sur GitHub
+docs/
+Docs/
+Img_Origine/
+*.pdf
+*.doc
+*.docx
+*.odt
+*.psd
+*.xcf
+# Sources brutes non utilisées par le site (les versions optimisées logo.webp / favicon.png le sont)
+src/assets/images/logo.svg
+src/assets/images/Favicon.svg
+public/Favicon.svg
+
+# Outils locaux
+.claude/
+coverage/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -1,0 +1,12 @@
+# Application React à une seule page (React Router, BrowserRouter).
+# Toute URL qui n'est pas un vrai fichier (/lieux, /animaux/ours…) doit renvoyer index.html,
+# sinon le serveur répond 404 quand on recharge la page ou qu'on ouvre un lien direct.
+# Vite copie ce fichier tel quel dans dist/ au build. Valable pour Apache (et Plesk avec Apache).
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

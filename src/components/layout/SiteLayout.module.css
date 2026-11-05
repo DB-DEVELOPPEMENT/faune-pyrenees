@@ -1,0 +1,163 @@
+.site {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  /* Valeurs de repos de la lampe (écrasées en direct par useMouseLight) */
+  --mx: 0;
+  --my: 0;
+  --lx: 50vw;
+  --ly: 50dvh;
+  /* Accent éclairci : lisible en texte sur fond sombre, même pour le vert ou le bordeaux.
+     Défini ICI (et pas dans :root) pour être recalculé avec l'accent de l'animal. */
+  --accent-light: color-mix(in srgb, var(--accent) 55%, white);
+  transition:
+    --accent var(--dur-slow) ease,
+    --glow var(--dur-slow) ease;
+  /* Le navigateur garde le défilement vertical, on récupère l'horizontal pour le swipe. */
+  touch-action: pan-y;
+}
+/* Lampe : le halo s'ouvre quand la souris entre dans la fenêtre, se referme quand elle sort. */
+.site[data-lamp='on'] {
+  --lamp-r: var(--lamp-size);
+}
+.site {
+  transition:
+    --accent var(--dur-slow) ease,
+    --glow var(--dur-slow) ease,
+    --lamp-r 0.6s var(--ease-out-expo);
+}
+
+/* ---------- Le cadre : « le site posé devant le paysage » ---------- */
+.frame {
+  position: absolute;
+  inset: var(--frame-y) var(--frame-x);
+  z-index: 1;
+  overflow: hidden;
+  background: var(--bg);
+  /* Bord droit + liseré clair teinté par l'animal (pas d'arrondi : esprit tirage photo). */
+  border: 1px solid color-mix(in srgb, var(--accent-light) 45%, rgba(255, 255, 255, 0.25));
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+/* Mise à l'échelle du site entier. Les % de width/height se calculent sur le cadre (non réduit),
+   puis transform: scale() réduit le tout visuellement : le site garde sa mise en page de
+   « grand écran », simplement en miniature. getOrigin (portail) mesure en coordonnées écran,
+   donc reste juste. Réglage : --site-scale dans tokens.css. */
+.scaler {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% / var(--site-scale));
+  height: calc(100% / var(--site-scale));
+  transform: scale(var(--site-scale));
+  transform-origin: 0 0;
+}
+
+.fill,
+.paper {
+  position: absolute;
+  inset: 0;
+}
+/* Fond des pages de contenu : sombre, avec un halo de la couleur de l'animal. */
+.paper {
+  background:
+    radial-gradient(circle at 85% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 55%),
+    linear-gradient(180deg, #13161b, var(--bg));
+}
+
+/* Repères d'angle (viseur d'appareil photo), 8 traits dessinés en dégradés sur un seul élément. */
+.marks {
+  --l: 28px; /* longueur d'un trait */
+  --t: 2px; /* épaisseur */
+  /* Fond clair autour du cadre → repères foncés, teintés de l'animal. */
+  --c: color-mix(in srgb, var(--accent) 70%, #1b1d21);
+  position: absolute;
+  inset: calc(var(--frame-y) - 10px) calc(var(--frame-x) - 10px);
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--c) 0 0) top left / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) top left / var(--t) var(--l),
+    linear-gradient(var(--c) 0 0) top right / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) top right / var(--t) var(--l),
+    linear-gradient(var(--c) 0 0) bottom left / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) bottom left / var(--t) var(--l),
+    linear-gradient(var(--c) 0 0) bottom right / var(--l) var(--t),
+    linear-gradient(var(--c) 0 0) bottom right / var(--t) var(--l);
+  background-repeat: no-repeat;
+  animation: focus 0.9s var(--ease-out-expo) both;
+}
+@keyframes focus {
+  from {
+    opacity: 0;
+    scale: 1.035;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* ---------- Grille interne du site ---------- */
+.layout {
+  position: relative;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--side-w);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+/* Header / main / footer passent au-dessus de la bande vitrée
+   (.glass a un transform → elle serait sinon peinte par-dessus eux). */
+.layout > :not(.glass) {
+  position: relative;
+  z-index: 1;
+}
+
+.glass {
+  grid-column: 2;
+  grid-row: 1 / -1;
+  background: var(--glass);
+  border-left: 1px solid var(--glass-border);
+  /* backdrop-filter floute ce qui est DERRIÈRE : la photo reste visible à travers le verre. */
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.25);
+}
+
+.main,
+.page {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: minmax(0, 1fr);
+  min-height: 0;
+}
+.main {
+  grid-row: 2;
+}
+
+/* ---------- Mobile : une seule colonne, la bande vitrée devient une barre de vignettes ---------- */
+@media (max-width: 640px) {
+  .site {
+    --frame-x: 8px;
+    --frame-y: 8px;
+  }
+  .marks {
+    display: none;
+  }
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .glass {
+    display: none;
+  }
+  .page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+}

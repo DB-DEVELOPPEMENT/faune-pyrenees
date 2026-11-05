@@ -1,0 +1,20 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.72rem;
+  border: 1px solid color-mix(in srgb, var(--badge) 60%, transparent);
+  background: color-mix(in srgb, var(--badge) 16%, transparent);
+  transition: background var(--dur-fast) ease;
+}
+.badge::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--badge);
+}
+a:hover > .badge {
+  background: color-mix(in srgb, var(--badge) 32%, transparent);
+}

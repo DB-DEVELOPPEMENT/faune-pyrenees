@@ -1,0 +1,66 @@
+.panel {
+  grid-column: 2;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  /* Les vignettes chevauchent le bord gauche du verre, comme sur la maquette. */
+  margin-left: calc(var(--thumb) / -2);
+  padding-right: clamp(0.5rem, 2vw, var(--space-3));
+}
+
+.thumbs {
+  position: relative; /* référence des offsetLeft pour le recentrage mobile */
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 1.4dvh, 14px);
+}
+
+/* Très faible hauteur (téléphone à l'horizontale) : on retire la pagination, doublon des vignettes. */
+@media (max-height: 560px) and (min-width: 641px) {
+  .panel {
+    --thumb: 38px;
+  }
+  .thumbs {
+    gap: 4px;
+  }
+  .pagination {
+    display: none;
+  }
+}
+
+/* Mobile : barre horizontale en verre, défilante, avec aimantation (scroll-snap). */
+@media (max-width: 640px) {
+  .panel {
+    --thumb: 52px;
+    grid-column: 1;
+    margin: 0 var(--gutter) var(--space-2);
+    padding: 0 var(--space-1);
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 0; /* angles droits, comme le cadre */
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    transform: none;
+  }
+  .thumbs {
+    flex-direction: row;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    touch-action: pan-x; /* le défilement natif annule le swipe de la scène (pointercancel) */
+    scrollbar-width: none;
+    padding: 10px 8px; /* de la place pour le zoom et l'aura au survol */
+  }
+  .thumbs::-webkit-scrollbar {
+    display: none;
+  }
+  .thumbs > li {
+    flex: none;
+    scroll-snap-align: center;
+  }
+  .pagination {
+    display: none; /* la pagination ferait doublon avec la rangée de vignettes */
+  }
+}

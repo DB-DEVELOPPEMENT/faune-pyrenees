@@ -1,0 +1,119 @@
+/*
+ * Design tokens : la seule source des couleurs, espacements, rayons, durées.
+ * Règle : pas de valeur « magique » dans les modules CSS, on passe par une variable ici.
+ * --accent / --glow sont écrasés à chaque animal par Hero.jsx (style inline) et
+ * se propagent par héritage à tout le sous-arbre (bouton, trait, aura, halo).
+ */
+/*
+ * @property : déclare le TYPE de ces variables. Sans ça le navigateur les voit comme du
+ * texte et ne sait pas les animer ; avec, `transition: --accent 1s` fond la couleur
+ * d'un animal vers le suivant (bouton, trait, aura…) sans une ligne de JS.
+ */
+@property --accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #d9a441;
+}
+@property --glow {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(217, 164, 65, 0.55);
+}
+/* Position de l'animal dans la photo (centre de l'aura), animée elle aussi. */
+/* Rayon du halo « lampe » : typé pour pouvoir s'ouvrir / se fermer en transition. */
+@property --lamp-r {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+@property --fx {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 70%;
+}
+@property --fy {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 40%;
+}
+
+:root {
+  /* Couleurs de base (thème sombre cinéma) */
+  --bg: #0b0d10;
+  --fg: #f4f1ea;
+  --fg-muted: rgba(244, 241, 234, 0.78);
+  --fg-faint: rgba(244, 241, 234, 0.5);
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-strong: rgba(20, 22, 26, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --badge-bg: rgba(250, 248, 242, 0.92);
+
+  /* Accent par défaut (chouette) */
+  --accent: #d9a441;
+  --glow: rgba(217, 164, 65, 0.55);
+
+  /* Typographie */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-brand: 'Montserrat', var(--font-body); /* signature DB-Développement */
+
+  /* Espacements */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --gutter: clamp(1rem, 4vw, 4rem);
+
+  /* Gabarit : largeur de la colonne vitrée de droite et taille des vignettes.
+     Les vignettes dépendent aussi de la hauteur (dvh) : 7 vignettes doivent tenir
+     sur un écran portable de 768 px de haut. */
+  --side-w: clamp(150px, 14vw, 210px);
+  --thumb: clamp(40px, min(4.6vw, 7dvh), 72px);
+  /*
+   * TAILLE DU SITE dans l'écran (le paysage noir & blanc se voit autour).
+   *   --frame-x / --frame-y : marges autour du cadre → cadre de 64 % (largeur) × 82 % (hauteur) de l'écran
+   *   --site-scale          : réduction du CONTENU (textes, vignettes…), 1 = taille réelle
+   * Pour un site plus grand : diminuer les marges ET augmenter --site-scale.
+   */
+  --frame-x: 18vw;
+  --frame-y: 9dvh;
+  --site-scale: 0.72;
+
+  /* Fond derrière le site : gris clair sur lequel la photo N&B est posée en transparence. */
+  --hero-base: #c9c4bb;
+  --hero-opacity: 0.6;
+  --lamp-size: 260px; /* rayon du halo de couleur autour de la souris */
+
+  /* Rayons, ombres */
+  --radius-panel: 32px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.45);
+
+  /* Durées / courbes */
+  --dur-fast: 0.25s;
+  --dur-base: 0.45s;
+  --dur-slow: 1.1s;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Calques (z-index) centralisés pour éviter la guerre des 9999 */
+  --z-scene: 0;
+  --z-glass: 1;
+  --z-content: 2;
+  --z-menu: 10;
+}
+
+/* Tablette : on rend de la place au site, sinon les textes deviennent trop petits. */
+@media (max-width: 1024px) {
+  :root {
+    --frame-x: 6vw;
+    --frame-y: 8dvh;
+    --site-scale: 0.85;
+  }
+}
+/* Mobile : site en taille réelle (voir aussi SiteLayout.module.css, cadre à 8 px du bord). */
+@media (max-width: 640px) {
+  :root {
+    --site-scale: 1;
+  }
+}

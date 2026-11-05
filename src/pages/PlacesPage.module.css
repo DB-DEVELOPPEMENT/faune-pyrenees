@@ -1,0 +1,114 @@
+.content {
+  position: relative; /* référence des offsetTop pour le défilement vers une ancre */
+}
+
+/* Bandeau : photo panoramique, dégradé vers le bas pour lire le titre, lent zoom à l'ouverture. */
+.banner {
+  position: relative;
+  margin-top: var(--space-2);
+  aspect-ratio: 21 / 8;
+  min-height: 220px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent-light) 40%, transparent);
+}
+.banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: banner 10s var(--ease-out-expo) both;
+}
+@keyframes banner {
+  from {
+    transform: scale(1.18);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 35%, rgba(11, 13, 16, 0.85));
+}
+.bannerText {
+  position: absolute;
+  z-index: 1;
+  left: var(--space-3);
+  bottom: var(--space-3);
+}
+.bannerText > * {
+  margin: 0 !important;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+.bannerCredit {
+  position: absolute;
+  z-index: 1;
+  right: 0.6rem;
+  bottom: 0.5rem;
+}
+
+/* Puces de filtre : angles droits, liseré à la couleur de l'animal quand actif. */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: var(--space-3) 0;
+}
+.filters button {
+  --chip: var(--fg-muted);
+  padding: 0.45rem 0.9rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--fg-muted);
+  transition:
+    border-color var(--dur-fast) ease,
+    color var(--dur-fast) ease,
+    background var(--dur-fast) ease;
+}
+.filters button:hover {
+  color: var(--fg);
+}
+.filters button[aria-pressed='true'] {
+  border-color: var(--chip);
+  color: var(--fg);
+  background: color-mix(in srgb, var(--chip) 22%, transparent);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: var(--space-3);
+}
+
+.charter {
+  margin-top: var(--space-5);
+  padding: var(--space-3);
+  border: 1px solid var(--glass-border);
+  border-left: 2px solid var(--accent);
+  background: var(--glass);
+}
+.charter h2 {
+  margin-top: 0;
+}
+.charter ol {
+  display: grid;
+  gap: 0.6rem;
+  padding-left: 1.2rem;
+  list-style: decimal;
+  color: var(--fg-muted);
+}
+.charter li::marker {
+  color: var(--accent-light);
+  font-weight: 600;
+}
+
+.disclaimer {
+  margin-top: var(--space-3);
+  font-size: 0.8rem;
+  font-style: italic;
+}

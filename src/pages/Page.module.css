@@ -1,0 +1,90 @@
+/*
+ * Styles partagés des pages de contenu (fiche animal, lieux, 404).
+ * .content est LE conteneur qui défile : le cadre du site, lui, ne bouge jamais.
+ */
+.content {
+  grid-column: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-2) var(--space-5) var(--space-5) var(--gutter);
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--accent) 60%, transparent) transparent;
+}
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.crumbs a:hover {
+  color: var(--accent-light);
+}
+
+.eyebrow {
+  margin-top: var(--space-3);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  color: var(--accent-light);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 4.2vw, 4rem);
+  line-height: 1.05;
+}
+
+.lead {
+  margin-top: 1rem;
+  max-width: 62ch;
+  font-size: 1.05rem;
+  color: var(--fg);
+}
+
+.content h2 {
+  margin: var(--space-4) 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2vw, 1.8rem);
+  font-weight: 600;
+}
+.content p {
+  max-width: 68ch;
+  color: var(--fg-muted);
+}
+.content p + p {
+  margin-top: 0.9rem;
+}
+
+/* Bouton secondaire (liens de retour, page suivante…) */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  transition:
+    border-color var(--dur-fast) ease,
+    color var(--dur-fast) ease;
+}
+.button:hover {
+  border-color: var(--accent-light);
+  color: var(--accent-light);
+}
+
+@media (max-width: 640px) {
+  .content {
+    flex: 1;
+    padding: var(--space-1) var(--gutter) var(--space-3);
+  }
+}

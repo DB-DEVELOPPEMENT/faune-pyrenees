@@ -1,0 +1,126 @@
+/*
+ * Seul le reflet (.glow) suit la souris (--mx/--my) : la photo reste immobile (choix de l’auteur).
+ * --depth-glow : distance parcourue par le reflet pour --mx = ±1.
+ */
+.scene {
+  --depth-glow: 220px;
+
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-scene);
+  background: var(--bg);
+  overflow: hidden;
+  container-type: size; /* référence des unités cqw/cqh de .portalRing */
+  /* L'aura glisse vers l'animal suivant au lieu de sauter (variables typées dans tokens.css). */
+  transition:
+    --fx var(--dur-slow) var(--ease-out-expo),
+    --fy var(--dur-slow) var(--ease-out-expo);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+
+  will-change: clip-path;
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none; /* annule le reset global (img max-width: 100%) qui supprimait le débord à droite */
+  object-fit: cover;
+}
+
+/* Les calques au-dessus des photos (dont l'ancienne en sortie, zIndex 0, et la nouvelle, 1). */
+.aura,
+.shade,
+.vignette,
+.glow {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.aura {
+  inset: -10%;
+  background: radial-gradient(circle at var(--fx) var(--fy), var(--glow), transparent 32%);
+  mix-blend-mode: soft-light;
+  animation: breathe 7s ease-in-out infinite;
+  will-change: opacity;
+}
+
+.shade {
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(11, 13, 16, 0.88) 0%, rgba(11, 13, 16, 0.55) 32%, transparent 62%),
+    linear-gradient(180deg, rgba(11, 13, 16, 0.55) 0%, transparent 22%),
+    linear-gradient(0deg, rgba(11, 13, 16, 0.6) 0%, transparent 28%);
+}
+
+.vignette {
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.glow {
+  width: 70vmax;
+  height: 70vmax;
+  left: 50%;
+  top: 50%;
+  margin: -35vmax 0 0 -35vmax;
+  background: radial-gradient(circle, rgba(255, 214, 160, 0.16), transparent 60%);
+  mix-blend-mode: screen;
+  transform: translate3d(calc(var(--mx) * var(--depth-glow)), calc(var(--my) * var(--depth-glow) * 0.7), 0);
+  will-change: transform;
+}
+
+/*
+ * Rayon du portail : circle(150%) = 1,5 × √(l² + h²) / √2 (définition CSS des % de circle()).
+ * hypot(100cqw, 100cqh) = diagonale de .scene (container-type: size). 1,5 / √2 ≈ 1,0607.
+ * L'anneau a donc, à scale(1), exactement la taille finale du cercle : bords alignés.
+ */
+.portalRing {
+  --R: calc(hypot(100cqw, 100cqh) * 1.0607);
+  position: absolute;
+  z-index: 3;
+  width: calc(var(--R) * 2);
+  height: calc(var(--R) * 2);
+  margin: calc(var(--R) * -1) 0 0 calc(var(--R) * -1);
+  border-radius: 50%;
+  border: 2px solid var(--accent-light);
+  /* Ombre courte : l'élément fait plusieurs milliers de px, une grande ombre coûte cher à peindre. */
+  box-shadow: 0 0 18px 2px var(--glow);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Mobile : le texte est en bas → dégradé du bas vers le haut, plus de dégradé latéral. */
+@media (max-width: 640px) {
+  .shade {
+    background:
+      linear-gradient(180deg, rgba(11, 13, 16, 0.6) 0%, transparent 20%),
+      linear-gradient(0deg, rgba(11, 13, 16, 0.95) 0%, rgba(11, 13, 16, 0.65) 45%, transparent 75%);
+  }
+}
+
+/* Écran tactile ou animations réduites : couches figées (le hook ne tourne pas non plus). */
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .photo,
+  .aura,
+  .glow {
+    transform: none;
+    will-change: auto;
+  }
+}

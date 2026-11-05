@@ -1,0 +1,205 @@
+.footer {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: end;
+  padding: var(--space-2) 0 var(--space-3);
+}
+
+/* © à gauche, réseaux au centre (comme la maquette), signature à droite */
+.bottom {
+  grid-column: 1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: var(--space-3);
+  padding: 0 var(--space-4) 0 var(--gutter);
+}
+.copy {
+  font-size: 0.7rem;
+  color: var(--fg-faint);
+}
+
+.social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+/* Barre d'accent sous les réseaux (rappel de la maquette) */
+.social::after {
+  content: '';
+  width: 64px;
+  height: 3px;
+  margin-top: 0.3rem;
+  background: var(--accent);
+}
+.label {
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.icons {
+  display: flex;
+  gap: 0.5rem;
+}
+.icon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  color: var(--fg-muted);
+  transition: color var(--dur-fast) ease;
+}
+a.icon:hover {
+  color: var(--accent-light);
+}
+
+/* Signature : typographie dédiée (Montserrat, capitales espacées) façon « marque d'agence ». */
+.signature {
+  justify-self: end;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.15rem 0.7rem;
+  font-family: var(--font-brand);
+  text-align: right;
+}
+.by {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.author {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+.contact {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid color-mix(in srgb, var(--accent-light) 60%, transparent);
+  color: var(--accent-light);
+  transition:
+    background var(--dur-fast) ease,
+    color var(--dur-fast) ease;
+}
+a.contact:hover {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.autoplay {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 var(--space-2);
+}
+.play {
+  position: relative;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  transition: background var(--dur-fast) ease;
+}
+.play:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+/* Anneau de progression : pathLength=100 → dasharray/offset en « pourcents » du cercle. */
+.progress {
+  position: absolute;
+  inset: 0;
+  rotate: -90deg;
+  fill: none;
+  stroke: var(--accent-light);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+.progress[data-running='true'] {
+  animation: progress var(--delay) linear forwards;
+}
+@keyframes progress {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.autoText {
+  font-size: 0.7rem;
+  line-height: 1.35;
+  color: var(--fg-muted);
+}
+.autoText span {
+  display: block;
+  color: var(--fg-faint);
+}
+
+@media (max-width: 1280px) {
+  .autoText {
+    display: none;
+  }
+  .autoplay {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 1100px) {
+  .copy,
+  .label,
+  .social::after {
+    display: none;
+  }
+  .bottom {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0 var(--gutter) var(--space-2);
+  }
+  .bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    padding: 0;
+  }
+  .signature {
+    justify-self: auto;
+    justify-content: flex-start;
+    text-align: left;
+  }
+  .by {
+    display: none;
+  }
+  .autoplay {
+    padding: 0;
+  }
+  .play {
+    width: 44px;
+    height: 44px;
+  }
+}

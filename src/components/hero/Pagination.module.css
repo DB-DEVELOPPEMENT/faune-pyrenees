@@ -1,0 +1,55 @@
+.pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.arrow {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  transition: background var(--dur-fast) ease;
+}
+.arrow:hover {
+  background: var(--glass);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  position: relative;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--fg-faint);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  transition:
+    color var(--dur-fast) ease,
+    font-size var(--dur-fast) ease;
+}
+.item:hover {
+  color: var(--fg);
+}
+.item[data-active='true'] {
+  color: var(--accent-light);
+  font-size: 0.95rem;
+}
+
+/* Trait entre la vignette et le numéro actif (margin et non transform : Motion anime le transform). */
+.trait {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  width: clamp(20px, 2.6vw, 48px);
+  height: 2px;
+  margin: -1px 0.4rem 0 0;
+  border-radius: 2px;
+  background: var(--accent);
+}

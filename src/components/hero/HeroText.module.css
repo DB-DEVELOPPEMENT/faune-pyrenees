@@ -1,0 +1,129 @@
+.wrap {
+  grid-column: 1;
+  align-self: center;
+  max-width: min(40rem, 48vw);
+  padding: 0 var(--space-4) 0 var(--gutter);
+}
+
+.tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1rem, 1.6vw, 1.35rem);
+  color: var(--accent-light);
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 5.4vw, 5.5rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Chaque mot masque ses lettres qui « montent » depuis le bas (y: 110% → 0). */
+.word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.1em; /* place pour les jambages (g, p, q) */
+  margin-bottom: -0.1em;
+}
+.letter {
+  display: inline-block;
+  will-change: transform;
+}
+
+.latin {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  font-style: italic;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.description {
+  margin-top: 1rem;
+  max-width: 34rem;
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  color: var(--fg-muted);
+}
+
+.actions {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.more,
+.video {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  transition:
+    transform var(--dur-fast) ease,
+    box-shadow var(--dur-fast) ease;
+}
+
+.more {
+  padding: 0.75rem 1.6rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 10px 30px var(--glow);
+}
+
+.video {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1.2rem 0.5rem 0.5rem;
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-border);
+}
+
+.playIcon {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+}
+
+/* Effets de survol uniquement sur les vrais liens (SmartLink rend un <span> sans URL). */
+a.more:hover,
+a.video:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+  .wrap {
+    max-width: none;
+    align-self: auto;
+    padding: 0 var(--gutter) var(--space-2);
+  }
+  .title {
+    font-size: clamp(2rem, 9vw, 3.2rem);
+  }
+  .latin {
+    margin-top: 0.5rem;
+  }
+  /* 3 lignes max : la barre de vignettes doit rester visible. */
+  .description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+  }
+  .actions {
+    margin-top: 1rem;
+  }
+}

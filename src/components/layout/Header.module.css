@@ -1,0 +1,142 @@
+.header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+  padding-top: var(--space-3);
+}
+
+.brand {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: 0 var(--space-4) 0 var(--gutter);
+}
+
+/* Le logo a un fond blanc (image) : on l'assume dans un badge clair à angles droits. */
+.logo {
+  flex: none;
+  display: block;
+  padding: 6px 12px;
+  background: var(--badge-bg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+.logo img {
+  height: clamp(32px, 3.8vw, 46px);
+  width: auto;
+}
+
+.place {
+  min-width: 0;
+  margin-left: auto;
+  text-align: right;
+}
+.placeName {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.line {
+  width: clamp(30px, 6vw, 110px);
+  height: 1px;
+  background: var(--fg-faint);
+}
+.welcome {
+  margin-top: 0.3rem;
+  font-size: 0.7rem;
+  color: var(--fg-muted);
+}
+
+/* Navigation : séparée du lieu par un filet vertical, soulignement à la couleur de l'animal. */
+.nav {
+  flex: none;
+  display: flex;
+  gap: clamp(0.9rem, 1.6vw, 1.6rem);
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--glass-border);
+}
+.navLink {
+  position: relative;
+  padding: 0.4rem 0;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  white-space: nowrap;
+  transition: color var(--dur-fast) ease;
+}
+.navLink::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+.navLink:hover,
+.navLink[aria-current='page'] {
+  color: var(--fg);
+}
+.navLink:hover::after,
+.navLink[aria-current='page']::after {
+  transform: scaleX(1);
+}
+
+.tools {
+  grid-column: 2;
+  display: flex;
+  justify-content: center;
+}
+.burger {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  transition: background var(--dur-fast) ease;
+}
+.burger:hover {
+  background: var(--glass);
+}
+
+@media (max-width: 1200px) {
+  .welcome {
+    display: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .place {
+    display: none;
+  }
+  .nav {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--space-2) var(--gutter) 0;
+  }
+  .brand {
+    padding: 0;
+  }
+  .nav {
+    display: none; /* le menu burger porte les mêmes liens */
+  }
+}

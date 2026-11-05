@@ -1,0 +1,103 @@
+.thumb {
+  position: relative;
+  display: block;
+  width: var(--thumb);
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transition: filter var(--dur-base) ease;
+}
+
+/* Interrupteur N&B (config/ui.js) : gris au repos, couleur au survol, au focus et si active. */
+.thumb[data-grayscale='true'] .img {
+  filter: grayscale(1) brightness(0.85);
+}
+.thumb:hover .img,
+.thumb:focus-visible .img,
+.thumb[data-active='true'] .img {
+  filter: none;
+}
+
+.aura {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: var(--thumb-glow);
+  filter: blur(14px);
+  opacity: 0;
+  transition: opacity var(--dur-base) ease;
+}
+.thumb:hover .aura,
+.thumb:focus-visible .aura {
+  opacity: 1;
+}
+.thumb[data-active='true'] .aura {
+  opacity: 1;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.ring {
+  position: absolute;
+  inset: -5px;
+  z-index: 2;
+  border-radius: 50%;
+  border: 2px solid var(--thumb-accent);
+  opacity: 0;
+  transform: scale(0.85);
+  transition:
+    opacity var(--dur-base) ease,
+    transform var(--dur-base) var(--ease-out-expo);
+}
+.thumb[data-active='true'] .ring {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Onde de choc : invisible pendant son délai (fill-mode both + 0 % à opacité 0),
+   puis un anneau à la couleur du nouvel animal s'élargit et s'efface. */
+.wave {
+  position: absolute;
+  inset: -3px;
+  z-index: 3;
+  border-radius: 50%;
+  border: 2px solid var(--accent-light);
+  box-shadow: 0 0 18px var(--glow);
+  pointer-events: none;
+  animation: wave 0.9s var(--ease-out-expo) both;
+}
+@keyframes wave {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  12% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+}
