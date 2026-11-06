@@ -16,18 +16,22 @@
   padding: 0 var(--space-4) 0 var(--gutter);
 }
 
-/* Le logo a un fond blanc (image) : on l'assume dans un badge clair à angles droits. */
+/* Logo v2 : détouré et transparent, posé directement sur la photo (pas de badge).
+   L'ombre portée le garde lisible même sur un ciel clair. */
 .logo {
   flex: none;
   display: block;
-  padding: 6px 12px;
-  background: var(--badge-bg);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 .logo img {
-  height: clamp(32px, 3.8vw, 46px);
+  /* min 52px : le nom reste lisible sur tablette, où le site est réduit (--site-scale 0.85) */
+  height: clamp(52px, 5.5vw, 76px);
   width: auto;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.55));
 }
+/* Ancien logo v1 (fond blanc dans l'image) : badge clair. Pour revenir en arrière avec logo.webp :
+.logo { flex: none; display: block; padding: 6px 12px; background: var(--badge-bg); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); }
+.logo img { height: clamp(32px, 3.8vw, 46px); width: auto; }
+*/
 
 .place {
   min-width: 0;

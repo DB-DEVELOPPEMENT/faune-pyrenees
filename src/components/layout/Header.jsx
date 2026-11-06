@@ -2,9 +2,14 @@ import { Link, NavLink } from 'react-router';
 import { AnimatePresence, motion } from 'motion/react';
 import { MapPin, Menu } from 'lucide-react';
 import { useSliderContext } from '@/context/SliderContext.jsx';
-// logo.webp = recadrage de logo.svg (qui embarque un PNG de 500 Ko) : 13 Ko.
-// Le jour où un vrai logo vectoriel existe, il suffit de changer cet import.
-import logo from '@/assets/images/logo.webp';
+// Logo v2 : logo-v2.webp = Logo.png détouré (damier rendu transparent), sans « MOUNTAIN RANGE »,
+// recoloré en crème (couleur des textes du site) pour rester lisible sur toutes les photos. 24 Ko.
+// Recette (ffmpeg, filtre geq) : recadrage 830x384 à (290,172) ; opaque = pixel sombre (min RVB < 185)
+// ou coloré (max-min > 14), le damier gris devient transparent ; couleur #f4f1ea ; largeur 560 px.
+import logo from '@/assets/images/logo-v2.webp';
+// Ancien logo (v1), pour revenir en arrière : remplacer l'import ci-dessus par celui-ci.
+// src/assets/images/logo.webp = recadrage de logo.svg (qui embarque un PNG de 500 Ko) : 13 Ko.
+// import logo from '@/assets/images/logo.webp';
 import styles from './Header.module.css';
 
 // Liens principaux, affichés avant le burger. Ajouter une page = une ligne ici (+ sa <Route>).
@@ -25,7 +30,8 @@ export default function Header({ animal }) {
     <header className={styles.header}>
       <div className={styles.brand}>
         <Link to="/" className={styles.logo} aria-label="Faune des Pyrénées — accueil">
-          <img src={logo} alt="" width="560" height="200" />
+          {/* Ancien logo v1 : width="560" height="200" */}
+          <img src={logo} alt="" width="560" height="259" />
         </Link>
 
         <div className={styles.place}>

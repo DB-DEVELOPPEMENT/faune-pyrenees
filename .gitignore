@@ -30,6 +30,7 @@ Img_Origine/
 # Sources brutes non utilisées par le site (les versions optimisées logo.webp / favicon.png le sont)
 src/assets/images/logo.svg
 src/assets/images/Favicon.svg
+src/assets/images/Logo.png
 public/Favicon.svg
 
 # Outils locaux
